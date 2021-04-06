@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 namespace AwesomeSnippets {
+
     public class UnityExtenstionsSample : MonoBehaviour {
 
         private void Start() {
