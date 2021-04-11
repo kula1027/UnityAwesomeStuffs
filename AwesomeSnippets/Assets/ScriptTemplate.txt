@@ -1,0 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace AwesomeSnippets {
+
+    public class #SCRIPTNAME# : MonoBehaviour {
+
+        #region Mono Methods
+
+        private void Awake() {
+        }
+
+        private void Start() {
+        }
+        
+        #endregion Mono Methods           
+    }
+}
