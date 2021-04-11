@@ -78,4 +78,10 @@ public static class UnityTransformExtension {
 
         return retList;
     }
+
+    public static void DestroyChildrenAll(this Transform transform) {
+        foreach (Transform child in transform) {
+            Object.Destroy(child.gameObject);
+        }
+    }
 }
