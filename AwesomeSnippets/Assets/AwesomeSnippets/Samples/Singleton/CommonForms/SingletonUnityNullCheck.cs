@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace AwesomeSnippets {
 
-    public abstract class Singleton<T> : MonoBehaviour where T : Component {
+    public class SingletonUnityNullCheck<T> : MonoBehaviour where T : Component {
         private static T instance;
 
         public static T Instance {
             get {
-                if (ReferenceEquals(instance, null)) {
+                if (instance == null) {
                     instance = FindObjectOfType<T>();
-                    if (ReferenceEquals(instance, null)) {
+                    if (instance == null) {
                         GameObject go = new GameObject(typeof(T).Name);
                         instance = go.AddComponent<T>();
                     }
