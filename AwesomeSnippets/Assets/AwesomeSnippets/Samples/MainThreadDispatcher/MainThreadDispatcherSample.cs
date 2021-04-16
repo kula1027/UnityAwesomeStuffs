@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace AwesomeNamespace {
+namespace AwesomeSnippets {
 
     public class MainThreadDispatcherSample : MonoBehaviour {
         [SerializeField] private TextMeshPro tmp;
