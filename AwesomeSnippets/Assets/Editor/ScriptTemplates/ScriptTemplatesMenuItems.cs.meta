@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: 2bb53f23102710544994fe60d5fe854d
+guid: 3c3f0e56ce1fe0146ae8aedc0becfb18
+labels:
+- AwesomeSnippets
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

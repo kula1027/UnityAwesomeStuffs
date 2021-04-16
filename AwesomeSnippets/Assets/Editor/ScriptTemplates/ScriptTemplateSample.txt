@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AwesomeNamespace {
+namespace MyNamespace {
 
     public class #SCRIPTNAME# : MonoBehaviour {
 
         #region Mono Methods
 
-        private void Start() {
-        }
-
         private void Awake() {
         }
 
-        #endregion Mono Methods           
+        private void Start() {
+        }
+        
+        #endregion Mono Methods
     }
 }
