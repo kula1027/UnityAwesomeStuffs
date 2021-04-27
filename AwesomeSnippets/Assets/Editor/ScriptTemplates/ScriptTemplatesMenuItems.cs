@@ -3,35 +3,33 @@
 using UnityEditor;
 
 namespace AwesomeSnippets {
+    [InitializeOnLoad]
+    public static class ScriptTemplatesMenuItems {
+        private static readonly ScriptTemplatesSettings settings;
 
-	[InitializeOnLoad]
-	public static class ScriptTemplatesMenuItems {
-		private static ScriptTemplatesSettings settings;
+        static ScriptTemplatesMenuItems() {
+            string[] vs = AssetDatabase.FindAssets("t:ScriptTemplatesSettings");
 
-		static ScriptTemplatesMenuItems() {
-			string[] vs = AssetDatabase.FindAssets("t:ScriptTemplatesSettings");
+            if (vs.Length > 0) {
+                settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(AssetDatabase.GUIDToAssetPath(vs[0]));
+            }
+        }
 
-			if (vs.Length > 0) {
-				settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(AssetDatabase.GUIDToAssetPath(vs[0]));
-			}
-		}
-
-		[MenuItem("Assets/Create/C# Script Templates/ScriptTemplateSample", false, 80)]
-		private static void CreateScriptScriptTemplateSample() {
-			if (settings.Templates[0]) {
-				string templatePath = AssetDatabase.GetAssetPath(settings.Templates[0]);
-				ProjectWindowUtil.CreateScriptAssetFromTemplateFile(templatePath, "ScriptTemplateSample.cs");
-			}
-		}
+        [MenuItem("Assets/Create/C# Script Templates/ScriptTemplateSample", false, 80)]
+        private static void CreateScriptScriptTemplateSample() {
+            if (settings.Templates[0]) {
+                string templatePath = AssetDatabase.GetAssetPath(settings.Templates[0]);
+                ProjectWindowUtil.CreateScriptAssetFromTemplateFile(templatePath, "ScriptTemplateSample.cs");
+            }
+        }
 
 
-		[MenuItem("Assets/Create/C# Script Templates/ScriptTemplateSample 2", false, 80)]
-		private static void CreateScriptScriptTemplateSample2() {
-			if (settings.Templates[1]) {
-				string templatePath = AssetDatabase.GetAssetPath(settings.Templates[1]);
-				ProjectWindowUtil.CreateScriptAssetFromTemplateFile(templatePath, "ScriptTemplateSample2.cs");
-			}
-		}
-
-	}
+        [MenuItem("Assets/Create/C# Script Templates/ScriptTemplateSample 2", false, 80)]
+        private static void CreateScriptScriptTemplateSample2() {
+            if (settings.Templates[1]) {
+                string templatePath = AssetDatabase.GetAssetPath(settings.Templates[1]);
+                ProjectWindowUtil.CreateScriptAssetFromTemplateFile(templatePath, "ScriptTemplateSample2.cs");
+            }
+        }
+    }
 }

@@ -2,7 +2,6 @@
 using UnityEngine;
 
 namespace AwesomeSnippets {
-
     public class SomeModelData : MonoBehaviour {
         public ObservableVariable<int> IntegerData { get; } = new ObservableVariable<int>();
         public ObservableVariable<float> FloatData { get; } = new ObservableVariable<float>();

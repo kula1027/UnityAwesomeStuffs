@@ -2,7 +2,6 @@
 using UnityEngine;
 
 namespace AwesomeSnippets {
-
     [RequireComponent(typeof(TextMeshPro))]
     public class TextInteger : MonoBehaviour {
         [SerializeField] private SomeModelData someModelData;

@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
 namespace AwesomeSnippets {
-
     public abstract class SingletonThreadSafe<T> : MonoBehaviour where T : Component {
         private static T instance;
-        private static object lockObject = new Object();
+        private static readonly object lockObject = new Object();
 
         public static T Instance {
             get {

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
 namespace AwesomeSnippets {
-
     public class UnityExtenstionsSample : MonoBehaviour {
-
         private void Start() {
             Debug.Log($"FindDescendant(\"Lvl4\"): {transform.FindDescendant("Lvl4").name}");
 

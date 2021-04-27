@@ -2,7 +2,6 @@
 using UnityEngine;
 
 public static class UnityTransformExtension {
-
     /// <summary>
     /// find descendant by name matches first
     /// </summary>

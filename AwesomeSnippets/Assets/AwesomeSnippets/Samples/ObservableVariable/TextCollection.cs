@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 
 namespace AwesomeSnippets {
-
     [RequireComponent(typeof(TextMeshPro))]
     public class TextCollection : MonoBehaviour {
         [SerializeField] private SomeModelData someModelData;
@@ -28,6 +27,7 @@ namespace AwesomeSnippets {
                     if (e.NewItems.Count > 0) {
                         tmpText.text += $"{e.NewItems[0]}.";
                     }
+
                     break;
 
                 case NotifyCollectionChangedAction.Move:

@@ -2,7 +2,6 @@
 using UnityEngine;
 
 namespace AwesomeSnippets {
-
     [RequireComponent(typeof(TextMeshPro))]
     public class TextVector : MonoBehaviour {
         [SerializeField] private SomeModelData someModelData;

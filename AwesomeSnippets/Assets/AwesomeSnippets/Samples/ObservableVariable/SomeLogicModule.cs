@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections;
 using UnityEngine;
 
 /// <summary>
 /// Modifies someModelData periodically
 /// </summary>
 namespace AwesomeSnippets {
-
     public class SomeLogicModule : MonoBehaviour {
         [SerializeField] private SomeModelData someModelData;
 

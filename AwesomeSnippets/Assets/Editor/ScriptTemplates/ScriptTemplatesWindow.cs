@@ -1,23 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 
 namespace AwesomeSnippets {
-
     [InitializeOnLoad]
     public class ScriptTemplatesWindow : EditorWindow {
         public const string Label_AwesomeSnippets = "AwesomeSnippets";
-        private ScriptTemplatesSettings settings;
-
-        private Vector2 scroll;
 
         private TextAsset previewTextAsset;
 
-        public ScriptTemplatesSettings Settings {
-            get => this.settings;
-            set => this.settings = value;
+        private Vector2 scroll;
+
+        public ScriptTemplatesSettings Settings { get; set; }
+
+        private void OnGUI() {
+            minSize = new Vector2(320, 300);
+
+            if (Settings == null) {
+                OnGUI_StartButton();
+            } else {
+                OnGUI_SetupTemplates();
+            }
         }
 
         [MenuItem("Window/Script Templates")]
@@ -26,7 +30,8 @@ namespace AwesomeSnippets {
 
             string[] vs = AssetDatabase.FindAssets($"t:{typeof(ScriptTemplatesSettings).Name}");
             if (vs.Length > 0) {
-                window.Settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(AssetDatabase.GUIDToAssetPath(vs[0]));
+                window.Settings =
+                    AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(AssetDatabase.GUIDToAssetPath(vs[0]));
             }
         }
 
@@ -34,13 +39,15 @@ namespace AwesomeSnippets {
             string[] mtw = AssetDatabase.FindAssets($"{typeof(ScriptTemplatesWindow).Name} l:{Label_AwesomeSnippets}");
             if (mtw.Length > 0) {
                 return Directory.GetParent(AssetDatabase.GUIDToAssetPath(mtw[0]));
-            } else {
-                return null;
             }
+
+            return null;
         }
 
         private void DeleteExistingScript() {
-            string[] vs = AssetDatabase.FindAssets($"{ScriptTemplatesMenuItemGenerator.Name_Generate_Class} l:{Label_AwesomeSnippets}");
+            string[] vs =
+                AssetDatabase.FindAssets(
+                    $"{ScriptTemplatesMenuItemGenerator.Name_Generate_Class} l:{Label_AwesomeSnippets}");
 
             foreach (string foundAssetGUID in vs) {
                 AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(foundAssetGUID));
@@ -62,23 +69,14 @@ namespace AwesomeSnippets {
                 GUILayout.Width(btnSize.x)
             };
             if (GUILayout.Button("Save & Update", options)) {
-                EditorUtility.SetDirty(settings);
+                EditorUtility.SetDirty(Settings);
                 AssetDatabase.SaveAssets();
 
                 DeleteExistingScript();
-                ScriptTemplatesMenuItemGenerator.GenerateMenuItemScript(settings);
+                ScriptTemplatesMenuItemGenerator.GenerateMenuItemScript(Settings);
             }
+
             GUILayout.EndArea();
-        }
-
-        private void OnGUI() {
-            minSize = new Vector2(320, 300);
-
-            if (settings == null) {
-                OnGUI_StartButton();
-            } else {
-                OnGUI_SetupTemplates();
-            }
         }
 
         private void OnGUI_SetupTemplates() {
@@ -105,7 +103,7 @@ namespace AwesomeSnippets {
             string[] vs = AssetDatabase.FindAssets($"t:{typeof(ScriptTemplatesSettings).Name}");
 
             if (vs.Length > 0) {
-                settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(AssetDatabase.GUIDToAssetPath(vs[0]));
+                Settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(AssetDatabase.GUIDToAssetPath(vs[0]));
             } else {
                 Vector2 btnSize = new Vector2(300, 60);
                 Rect rect = new Rect(
@@ -115,17 +113,19 @@ namespace AwesomeSnippets {
 
                 GUILayout.BeginArea(rect);
                 GUILayoutOption[] options = {
-                        GUILayout.Height(btnSize.y),
-                        GUILayout.Width(btnSize.x)
-                    };
+                    GUILayout.Height(btnSize.y),
+                    GUILayout.Width(btnSize.x)
+                };
 
                 if (GUILayout.Button("Start Using Script Templates", options)) {
                     DirectoryInfo directoryInfo = FindWindowScriptAssetDirectory();
                     if (directoryInfo != null) {
-                        AssetDatabase.CreateAsset(CreateInstance<ScriptTemplatesSettings>(), directoryInfo + "\\Script Templates Settings.asset");
+                        AssetDatabase.CreateAsset(CreateInstance<ScriptTemplatesSettings>(),
+                            directoryInfo + "\\Script Templates Settings.asset");
                         AssetDatabase.SaveAssets();
 
-                        settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(directoryInfo + "\\Script Templates Settings.asset");
+                        Settings = AssetDatabase.LoadAssetAtPath<ScriptTemplatesSettings>(directoryInfo +
+                            "\\Script Templates Settings.asset");
                     }
                 }
 
@@ -136,36 +136,39 @@ namespace AwesomeSnippets {
         private void OnGUI_SelectScript() {
             GUILayout.Label("Templates", EditorStyles.boldLabel);
 
-            for (int loop = 0; loop < settings.Templates.Count; loop++) {
+            for (int loop = 0; loop < Settings.Templates.Count; loop++) {
                 EditorGUILayout.BeginHorizontal();
 
-                TextAsset taBefore = settings.Templates[loop];
-                settings.Templates[loop] = (TextAsset)EditorGUILayout.ObjectField(settings.Templates[loop], typeof(TextAsset), false);
-                if (taBefore != settings.Templates[loop]) {
-                    if (HasDuplicate(settings.Templates, loop)) {
-                        settings.Templates[loop] = null;
+                TextAsset taBefore = Settings.Templates[loop];
+                Settings.Templates[loop] =
+                    (TextAsset) EditorGUILayout.ObjectField(Settings.Templates[loop], typeof(TextAsset), false);
+                if (taBefore != Settings.Templates[loop]) {
+                    if (HasDuplicate(Settings.Templates, loop)) {
+                        Settings.Templates[loop] = null;
                     } else {
-                        previewTextAsset = settings.Templates[loop];
+                        previewTextAsset = Settings.Templates[loop];
                     }
                 }
 
                 GUILayout.Space(5);
 
                 if (GUILayout.Button(EditorGUIUtility.FindTexture("ViewToolOrbit"), GUILayout.Width(30))) {
-                    previewTextAsset = settings.Templates[loop];
+                    previewTextAsset = Settings.Templates[loop];
                 }
+
                 if (GUILayout.Button(EditorGUIUtility.FindTexture("Toolbar Minus"), GUILayout.Width(30))) {
-                    if (previewTextAsset == settings.Templates[loop]) {
+                    if (previewTextAsset == Settings.Templates[loop]) {
                         previewTextAsset = null;
                     }
-                    settings.Templates.RemoveAt(loop);
+
+                    Settings.Templates.RemoveAt(loop);
                 }
 
                 EditorGUILayout.EndHorizontal();
             }
 
             if (GUILayout.Button("Add Template")) {
-                settings.Templates.Add(null);
+                Settings.Templates.Add(null);
             }
         }
 

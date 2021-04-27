@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AwesomeSnippets {
-
     public class SingletonUnityNullCheck<T> : MonoBehaviour where T : Component {
         private static T instance;
 

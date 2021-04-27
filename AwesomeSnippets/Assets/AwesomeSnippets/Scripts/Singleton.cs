@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 namespace AwesomeSnippets {
-
     public abstract class Singleton<T> : MonoBehaviour where T : Component {
         private static T instance;
 
