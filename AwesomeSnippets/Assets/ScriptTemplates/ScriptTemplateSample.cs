@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AwesomeSnippets {
+namespace MyNamespace {
 
-    public class #SCRIPTNAME# : MonoBehaviour {
+    public class ScriptTemplateSample : MonoBehaviour {
 
         #region Mono Methods
 
@@ -14,6 +14,6 @@ namespace AwesomeSnippets {
         private void Start() {
         }
         
-        #endregion Mono Methods           
+        #endregion Mono Methods
     }
 }

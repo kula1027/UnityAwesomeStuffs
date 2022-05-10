@@ -13,6 +13,9 @@ namespace MyNamespace {
 
         private void Start() {
         }
+
+        private vod Update(){
+        }
         
         #endregion Mono Methods
     }
