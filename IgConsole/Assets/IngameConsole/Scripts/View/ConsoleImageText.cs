@@ -1,0 +1,25 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+namespace IngameConsole {
+
+    public class ConsoleImageText : ConsoleText {
+        public const float FixedHeight = 140;
+        [SerializeField] protected Image image;
+
+        protected override void OnDataUpdated() {
+            base.OnDataUpdated();
+
+            image.sprite = consoleData.Sprite;
+        }
+
+        private void Awake() {
+            imgBackground.preserveAspect = true;
+            rectTransform = GetComponent<RectTransform>();
+        }
+
+        public override void UpdatePreferredHeight() {
+            // Do Nothing
+        }
+    }
+}
