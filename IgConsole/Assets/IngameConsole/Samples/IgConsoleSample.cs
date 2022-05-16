@@ -30,9 +30,9 @@ namespace IngameConsole {
                 return true;
             };
 
-            for (int loop = 0; loop < 5000; loop++) {
-                Debug.Log(GenerateRandomString(Random.Range(50, 300)));
-            }
+            //for (int loop = 0; loop < 5000; loop++) {
+            //    Debug.Log(GenerateRandomString(Random.Range(50, 300)));
+            //}
         }
 
         private string GenerateRandomString(int length) {

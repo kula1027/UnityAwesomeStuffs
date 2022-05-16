@@ -18,8 +18,8 @@ namespace IngameConsole {
             rectTransform = GetComponent<RectTransform>();
         }
 
-        public override void UpdatePreferredHeight() {
-            // Do Nothing
+        public override void UpdateRectTransform() {
+            rectTransform.sizeDelta = new Vector2(0, FixedHeight);
         }
     }
 }

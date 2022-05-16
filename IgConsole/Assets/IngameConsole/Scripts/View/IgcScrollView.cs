@@ -235,7 +235,7 @@ namespace IngameConsole {
 
             consoleText.transform.SetParent(scrollRect.content.transform);
             consoleText.RectTransform.anchoredPosition = new Vector2(0, posY);
-            consoleText.UpdatePreferredHeight();
+            consoleText.UpdateRectTransform();
 
             return consoleText;
         }

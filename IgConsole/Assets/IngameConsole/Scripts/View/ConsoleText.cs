@@ -59,7 +59,7 @@ namespace IngameConsole {
             tmpText.color = IgConsole.LogColor(consoleData.LogType);
         }
 
-        public virtual void UpdatePreferredHeight() {
+        public virtual void UpdateRectTransform() {
             RectTransform parentRect= transform.parent.GetComponent<RectTransform>();
 
             float prfHeight = tmpText.GetPreferredValues(consoleData.Msg, parentRect.rect.width, 0).y;

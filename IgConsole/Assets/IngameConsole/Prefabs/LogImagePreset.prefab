@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f3e6b7606dcd446b63a91f0a7fade8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tmpText: {fileID: 0}
+  tmpText: {fileID: 2183923395078258019}
   imgBackground: {fileID: 858826661924349317}
   image: {fileID: 7779945747630817032}
 --- !u!222 &858826661924349318
@@ -274,3 +274,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5506691237984686896, guid: 600021380f897144a90f41398eca0ee8, type: 3}
   m_PrefabInstance: {fileID: 5919251911811837522}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2183923395078258019 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5506691237984686897, guid: 600021380f897144a90f41398eca0ee8, type: 3}
+  m_PrefabInstance: {fileID: 5919251911811837522}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
