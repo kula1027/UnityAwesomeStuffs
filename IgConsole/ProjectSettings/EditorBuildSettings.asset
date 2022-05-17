@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/IngameConsole/Samples/ConsoleSampleScene.unity
+    path: Assets/IngameConsole/Samples/MobileSetup.unity
+    guid: c5ce1b717d1ae3b46a6bba3877deefc9
+  - enabled: 1
+    path: Assets/IngameConsole/Samples/SampleScene.unity
     guid: 60100febc081cee46bf9c4baf24a582f
   m_configObjects: {}

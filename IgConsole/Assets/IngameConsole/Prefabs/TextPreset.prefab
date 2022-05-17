@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5506691237984686896}
-  - component: {fileID: 5506691237984686898}
   - component: {fileID: 5506691237984686897}
+  - component: {fileID: 5506691237984686898}
   m_Layer: 5
   m_Name: TextPreset
   m_TagString: Untagged
@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -37,14 +38,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
---- !u!222 &5506691237984686898
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5506691237984686911}
-  m_CullTransparentMesh: 0
 --- !u!114 &5506691237984686897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,8 +60,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b1aa890c3c9cd5644b302221d239855f, type: 2}
-  m_sharedMaterial: {fileID: -5544881778470931718, guid: b1aa890c3c9cd5644b302221d239855f, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c54b7631a41518749a797cf453fadcac, type: 2}
+  m_sharedMaterial: {fileID: 1438291551933417655, guid: c54b7631a41518749a797cf453fadcac, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,8 +85,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -134,3 +127,11 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &5506691237984686898
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5506691237984686911}
+  m_CullTransparentMesh: 0

@@ -15,27 +15,17 @@ namespace IngameConsole {
 
         protected RectTransform rectTransform;
 
-        public TextMeshProUGUI TmpText {
-            get => tmpText;
-        }
+        public TextMeshProUGUI TmpText => tmpText;
 
-        public RectTransform RectTransform {
-            get { return rectTransform; }
-        }
+        public RectTransform RectTransform => rectTransform;
 
         public Color BgColor {
-            get {
-                return imgBackground.color;
-            }
-            set {
-                imgBackground.color = value;
-            }
+            get => imgBackground.color;
+            set => imgBackground.color = value;
         }
 
         public ConsoleData ConsoleData {
-            get {
-                return consoleData;
-            }
+            get => consoleData;
             set {
                 consoleData = value;
 
@@ -45,9 +35,7 @@ namespace IngameConsole {
 
         public Action<ConsoleText> OnClick { get; set; }
 
-        public float Height {
-            get { return rectTransform.sizeDelta.y; }
-        }
+        public float Height => rectTransform.sizeDelta.y;
 
 
         private void Awake() {
@@ -62,7 +50,8 @@ namespace IngameConsole {
         public virtual void UpdateRectTransform() {
             RectTransform parentRect= transform.parent.GetComponent<RectTransform>();
 
-            float prfHeight = tmpText.GetPreferredValues(consoleData.Msg, parentRect.rect.width, 0).y;
+            var s = consoleData.Msg.Length > 0 ? consoleData.Msg : " ";
+            float prfHeight = tmpText.GetPreferredValues(s, parentRect.rect.width, 0).y;
 
             rectTransform.sizeDelta = new Vector2(0, prfHeight);
         }
@@ -70,6 +59,5 @@ namespace IngameConsole {
         public void OnPointerClick(PointerEventData eventData) {
             OnClick?.Invoke(this);
         }
-
     }
 }

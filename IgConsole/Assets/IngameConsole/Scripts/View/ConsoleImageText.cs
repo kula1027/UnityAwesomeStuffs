@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace IngameConsole {
 
     public class ConsoleImageText : ConsoleText {
-        public const float FixedHeight = 140;
+        public const float FixedHeight = 148;
         [SerializeField] protected Image image;
 
         protected override void OnDataUpdated() {

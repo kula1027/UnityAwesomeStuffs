@@ -6,6 +6,8 @@ namespace IngameConsole {
     public class IgConsoleSample : MonoBehaviour {
         [SerializeField] private Sprite someRandomSprite;
 
+        private string filePath = Application.streamingAssetsPath + "/iglogs.txt";
+
         private void Start() {
             Debug.Log("Hello Console");
             Debug.LogWarning("Warning!");
@@ -13,26 +15,44 @@ namespace IngameConsole {
             Debug.LogException(new System.Exception("Exception!"));
             Debug.Assert(false, "Assert Failed!");
 
-            IgConsole.Log(someRandomSprite, "Random Sprite");
-            IgConsole.Log("click here to see details", "Random Long Strings:\n"
-                + GenerateRandomString(10000));
+            ///Log sprite
+            IgConsole.Log(someRandomSprite, "Log sprite sample, click for detail");
 
-            Debug.Log("");
+            ///Logging with detailed strings
+            IgConsole.Log(
+                "click here to see details",
+                "Random Long Strings:\n" + GenerateRandomString(10000));
 
-            //////////// Add Command ///////////////
+            CustomizeCommands();
+        }
+
+        private void CustomizeCommands() {
+            Debug.Log("[IgConsoleSample] type below sample commands\n" +
+                "\thi\n" +
+                "\tcustomfilter\n"
+            );
+
             IgConsole.OnSubmit += (strInput) => {
                 if (string.Equals("hi", strInput)) {
                     Debug.Log("Hello");
                 }
             };
 
-            IgConsole.Filter.CustomFilter += (x) => {
-                return true;
+            IgConsole.OnSubmit += (strInput) => {
+                if (string.Equals("customfilter", strInput)) {
+                    ApplyCustomizedFilter();
+                }
             };
+        }
 
-            //for (int loop = 0; loop < 5000; loop++) {
-            //    Debug.Log(GenerateRandomString(Random.Range(50, 300)));
-            //}
+        private void ApplyCustomizedFilter() {
+            IgConsole.Filter.CustomFilter += (ConsoleData x) => {
+                if (x.Msg.Length < 15) {//filter logs to show only length less than 15
+                    return true;
+                } else {
+                    return false;
+                }
+            };
         }
 
         private string GenerateRandomString(int length) {
