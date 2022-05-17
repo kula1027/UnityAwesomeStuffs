@@ -5,7 +5,6 @@ using UnityEngine;
 
 public partial class IgConsole {
 
-
 #if UNITY_EDITOR || DEVELOPMENT_BUILD        
     public static IgConsole Instance {
         get {
@@ -38,11 +37,10 @@ public partial class IgConsole {
         }
     }
 
-
     public static int NextLogId
         => Instance.nextLogId++;
 
-    public static IEnumerable<ConsoleData> Logs
+    public static List<ConsoleData> Logs
         => Instance.logs;
 
     public static ConsoleFilter Filter
@@ -56,28 +54,49 @@ public partial class IgConsole {
     public static DateTime LogStartTime
         => Instance.logStartTime;
 
-    public static void Clear()
-        => Instance.ClearData();
+    public static void Clear() {
+        Instance.ClearData();
+    }
 
-    //Log Msg
-    public static void Log(string msg, string detailed = "")
-        => Instance.Print(Instance.logLevelDefault, msg, detailed);
+    public static void Log(string msg, string detailed = "") {
+        Instance.Print(Instance.logLevelDefault, msg, detailed);
+    }
 
-    public static void Log(int logLevel, string msg, string detailed = "")
-        => Instance.Print(logLevel, msg, detailed);
+    public static void Log(int logLevel, string msg, string detailed = "") {
+        Instance.Print(logLevel, msg, detailed);
+    }
 
-    public static void Log(Sprite sprite, string msg = "")
-        => Instance.PrintSprite(Instance.logLevelDefault, msg, sprite);
+    public static void Log(Sprite sprite, string msg = "") {
+        Instance.PrintSprite(Instance.logLevelDefault, msg, sprite);
+    }
 
-    public static void Log(int logLevel, Sprite sprite, string msg)
-        => Instance.PrintSprite(logLevel, msg, sprite);
+    public static void Log(int logLevel, Sprite sprite, string msg) {
+        Instance.PrintSprite(logLevel, msg, sprite);
+    }
 
-    public static void LogInput(string msg)
-        => Instance.PrintInput(msg);
+    /// <summary>
+    /// create input to console. invokes OnSubmit
+    /// </summary>
+    /// <param name="msg"></param>
+    public static void LogInput(string msg) {
+        Instance.PrintInput(msg);
+    }
 
-    public static void Hide() => Instance.viewInterface.Hide();
+    /// <summary>
+    /// disable viewer gameobject
+    /// </summary>
+    public static void Hide() {
+        Instance.viewInterface.Hide();
+    }
 
-    public static void Show() => Instance.viewInterface.Show();
+    /// <summary>
+    /// enable viewer gameobject
+    /// </summary>
+    public static void Show() {
+        Instance.viewInterface.Show();
+    }
+
+    public static bool IsVisible => Instance.viewInterface.IsVisible;
 #else
     public static IgConsole Instance {
         get => null;
@@ -90,7 +109,7 @@ public partial class IgConsole {
     public static int NextLogId
         => 0;
 
-    public static IEnumerable<ConsoleData> Logs
+    public static List<ConsoleData> Logs
         => new List<ConsoleData>();
 
     public static ConsoleFilter Filter {
@@ -139,5 +158,7 @@ public partial class IgConsole {
     public static void Show() {
         /* do nothing */
     }
+
+    public static bool IsVisible => false;
 #endif
 }

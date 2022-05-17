@@ -3,39 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 /// <summary>
 /// Ingame Console
 /// </summary>
 public partial class IgConsole : MonoBehaviour {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
+    private static IgConsole instance;
+
     #region Unity SerializeFields
 
     [Header("Options")]
     [SerializeField] private bool printLogLevel = true;
 
     [SerializeField] private int logLevelDefault = 0;
-
     [SerializeField] private int logLevelWarning = 1;
-
     [SerializeField] private int logLevelError = 2;
-
     [SerializeField] private int logLevelInput = 3;
 
     [Header("Colors")]
     [SerializeField] private Color colorLog;
-
     [SerializeField] private Color colorWarning;
-
     [SerializeField] private Color colorError;
 
     [Header("Viewer")]
+    [SerializeField] private KeyCode keyBind0;
+    [SerializeField] private KeyCode keyBind1;
     [SerializeField] private ConsoleViewInterface viewInterface;
 
-    #endregion Unity SerializeFields
-
-    private static IgConsole instance;
+    #endregion Unity SerializeFields    
 
     private int nextLogId;
     private readonly List<ConsoleData> logs = new List<ConsoleData>(512);
@@ -47,6 +43,16 @@ public partial class IgConsole : MonoBehaviour {
     private void Awake() {
         if (ReferenceEquals(instance, null)) {
             Initialize();
+        }
+    }
+
+    private void Update() {
+        if (Input.GetKey(keyBind0) && Input.GetKeyDown(keyBind1)) {
+            if (viewInterface.IsVisible) {
+                Hide();
+            } else {
+                Show();
+            }
         }
     }
 
@@ -117,7 +123,6 @@ public partial class IgConsole : MonoBehaviour {
 
     private void UpdateConsole(ConsoleFilter filter) {
         if (!ReferenceEquals(viewInterface, null)) {
-            Profiler.BeginSample("UpdateFilter");
             viewInterface.ResetData();
         }
     }

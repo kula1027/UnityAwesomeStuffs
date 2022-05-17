@@ -1,11 +1,11 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace IngameConsole {
 
     public class FilterBox : MonoBehaviour {
+        [SerializeField] private TMP_InputField filterLogLevel;
         [SerializeField] private TMP_InputField filterInputField;
         [SerializeField] private TextMeshProUGUI textSubmittedInput;
         [SerializeField] private Toggle toggleRegex;
@@ -13,8 +13,9 @@ namespace IngameConsole {
         public void Initialize() {
             filterInputField.onSubmit.AddListener(OnSubmitFilterInputField);
             IgConsole.Filter.OnValueChanged += (filter) => {
-                toggleRegex.isOn = filter.UseRegexForFilter;
+                filterLogLevel.text = filter.LogLevel.ToString();
                 filterInputField.text = filter.FilterString;
+                toggleRegex.isOn = filter.UseRegexForFilter;
             };
         }
 

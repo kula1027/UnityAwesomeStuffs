@@ -2,32 +2,33 @@
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Profiling;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace IngameConsole {
 
     [RequireComponent(typeof(ScrollRect))]
-    public class IgcScrollView : MonoBehaviour {
+    public class IgcScrollView : MonoBehaviour, IDragHandler, IEndDragHandler {
+        private const float SLIDER_LOCK_THRESHOLD = 0.002f;
+
+        public ScrollRect ScrollRect { get; private set; }
+
+        private readonly List<ConsoleChunk> consoleChunks = new List<ConsoleChunk>(32);
+        private readonly List<float> preferredHeightCache = new List<float>();
+
         [SerializeField] private ConsoleDetailedViewer detailedViewer;
         [SerializeField] private GameObject pfLogTextPreset;
         [SerializeField] private GameObject pfLogImagePreset;
-
-        private readonly List<ConsoleChunk> consoleChunks = new List<ConsoleChunk>(32);
 
         private ConsoleChunk cntChunk;
         private ObjectPooler poolerImageText;
         private ObjectPooler poolerLogText;
 
-        private readonly List<float> preferredHeightCache = new List<float>();
-
-        private bool            resetSliderOnUpdate = true;
-        private ScrollRect      scrollRect;
+        private bool            lockSliderToZero = true;
         private TextMeshProUGUI tmpPreset;
 
         public void Initialize() {
-            scrollRect = GetComponent<ScrollRect>();
-            scrollRect.onValueChanged.AddListener(OnScrollSliderValueChanged);
+            ScrollRect = GetComponent<ScrollRect>();
 
             poolerLogText = new GameObject("TextPool").AddComponent<ObjectPooler>();
             poolerLogText.transform.SetParent(transform);
@@ -46,27 +47,20 @@ namespace IngameConsole {
             consoleText.OnClick = OnClickText;
         }
 
-        private void OnClickText(ConsoleText consoleText) {
-            detailedViewer.Show(
-               consoleText.ConsoleData.Msg + "\n\n" +
-               consoleText.ConsoleData.Detailed + "\n" +
-               IgConsole.LogStartTime.AddSeconds(consoleText.ConsoleData.RealtimeSinceStartup).ToString(ConsoleDetailedViewer.TIME_FORMAT));
-        }
-
         public void Add(ConsoleData data) {
             var targetChunk = GetTargetChunk();
 
             targetChunk.Add(data);
 
-            scrollRect.content.sizeDelta = new Vector2(
-                scrollRect.content.sizeDelta.x,
+            ScrollRect.content.sizeDelta = new Vector2(
+                ScrollRect.content.sizeDelta.x,
                 -targetChunk.Bottom
             );
 
             VisibilityCheck(targetChunk);
 
-            if (resetSliderOnUpdate && gameObject.activeInHierarchy) {
-                scrollRect.verticalNormalizedPosition = 0;
+            if (lockSliderToZero && gameObject.activeInHierarchy) {
+                ScrollRect.verticalNormalizedPosition = 0;
             }
         }
 
@@ -88,8 +82,8 @@ namespace IngameConsole {
 
             cntChunk = consoleChunks[consoleChunks.Count - 1];
 
-            scrollRect.content.sizeDelta = new Vector2(
-                scrollRect.content.sizeDelta.x,
+            ScrollRect.content.sizeDelta = new Vector2(
+                ScrollRect.content.sizeDelta.x,
                 -cntChunk.Bottom
             );
         }
@@ -111,7 +105,6 @@ namespace IngameConsole {
                 var arrSplit = new ConsoleData[ConsoleChunk.MaxCountPerChunk];
                 var chunk = CreateConsoleChunk(top);
 
-                Profiler.BeginSample("LoopLoopLoop");
                 for (var loop = 0; loop < arrSplit.Length; loop++) {
                     if (arrCount <= dataIdx) {
                         break;
@@ -121,7 +114,6 @@ namespace IngameConsole {
 
                     dataIdx++;
                 }
-                Profiler.EndSample();
 
                 chunk.UpdateArray(arrSplit);
                 consoleChunks.Add(chunk);
@@ -131,14 +123,12 @@ namespace IngameConsole {
 
             cntChunk = consoleChunks[consoleChunks.Count - 1];
 
-            scrollRect.content.sizeDelta = new Vector2(
-                scrollRect.content.sizeDelta.x,
+            ScrollRect.content.sizeDelta = new Vector2(
+                ScrollRect.content.sizeDelta.x,
                 -cntChunk.Bottom
             );
 
             VisibilityCheckAll();
-
-            Profiler.EndSample();
         }
 
         public void Clear() {
@@ -147,20 +137,10 @@ namespace IngameConsole {
 
             cntChunk = null;
 
-            scrollRect.content.sizeDelta = new Vector2(
-                scrollRect.content.sizeDelta.x,
+            ScrollRect.content.sizeDelta = new Vector2(
+                ScrollRect.content.sizeDelta.x,
                 0
             );
-        }
-
-        private void OnScrollSliderValueChanged(Vector2 val) {
-            resetSliderOnUpdate = val.y < 0.001f || scrollRect.verticalScrollbar.size > 0.999f;
-
-            if (scrollRect.verticalScrollbar.size < 0.05f) {
-                scrollRect.verticalScrollbar.size = 0.05f;
-            }
-
-            VisibilityCheckAll();
         }
 
         private void VisibilityCheckAll() {
@@ -170,8 +150,8 @@ namespace IngameConsole {
         }
 
         private void VisibilityCheck(ConsoleChunk chunk) {
-            var visibleTop    = -scrollRect.content.anchoredPosition.y;
-            var visibleBottom = -scrollRect.content.anchoredPosition.y - scrollRect.viewport.rect.height;
+            var visibleTop    = -ScrollRect.content.anchoredPosition.y;
+            var visibleBottom = -ScrollRect.content.anchoredPosition.y - ScrollRect.viewport.rect.height;
 
             if (chunk.VisibilityCheck(visibleTop, visibleBottom)) {
                 chunk.Enable();
@@ -216,7 +196,7 @@ namespace IngameConsole {
                 var s = data.Msg.Length > 0 ? data.Msg : " ";
                 var prfHeight = tmpPreset.GetPreferredValues(
                     s,
-                    scrollRect.content.rect.width,
+                    ScrollRect.content.rect.width,
                     0
                 ).y;
 
@@ -233,11 +213,62 @@ namespace IngameConsole {
 
             consoleText.ConsoleData = data;
 
-            consoleText.transform.SetParent(scrollRect.content.transform);
+            consoleText.transform.SetParent(ScrollRect.content.transform);
+            consoleText.transform.localScale = Vector3.one;
             consoleText.RectTransform.anchoredPosition = new Vector2(0, posY);
             consoleText.UpdateRectTransform();
 
             return consoleText;
         }
+
+        #region UI Interactions
+
+        private bool isDragging = false;
+
+        public void OnScrollSliderValueChanged(Vector2 val) {
+            lockSliderToZero = val.y < SLIDER_LOCK_THRESHOLD;
+
+            if (ScrollRect.verticalScrollbar.size < 0.05f) {
+                ScrollRect.verticalScrollbar.size = 0.05f;
+            }
+
+            VisibilityCheckAll();
+        }
+
+        private void OnClickText(ConsoleText consoleText) {
+            if (isDragging == false) {
+                string strTime = IgConsole.LogStartTime.AddSeconds(consoleText.ConsoleData.RealtimeSinceStartup).ToString(ConsoleDetailedViewer.TIME_FORMAT);
+                this.detailedViewer.Show(
+                   consoleText.ConsoleData.Msg + "\n\n" +
+                   consoleText.ConsoleData.Detailed + "\n" +
+                   strTime
+                );
+            }
+        }
+
+        public void UnlockSliderOnScroll(BaseEventData evt) {
+            if (lockSliderToZero && Input.mouseScrollDelta.y > 0) {
+                lockSliderToZero = false;
+                ScrollRect.verticalNormalizedPosition = SLIDER_LOCK_THRESHOLD + 0.0005f;
+            }
+        }
+
+        public void OnDrag(PointerEventData eventData) {
+            isDragging = true;
+            UnlockSliderOnDrag(eventData.delta.y);
+        }
+
+        public void UnlockSliderOnDrag(float yDelta) {
+            if (lockSliderToZero && yDelta < 0) {
+                lockSliderToZero = false;
+                ScrollRect.verticalNormalizedPosition = SLIDER_LOCK_THRESHOLD + 0.0005f;
+            }
+        }
+
+        public void OnEndDrag(PointerEventData eventData) {
+            isDragging = false;
+        }
+
+        #endregion
     }
 }

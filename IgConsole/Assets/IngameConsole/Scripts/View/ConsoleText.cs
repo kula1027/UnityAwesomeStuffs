@@ -62,7 +62,8 @@ namespace IngameConsole {
         public virtual void UpdateRectTransform() {
             RectTransform parentRect= transform.parent.GetComponent<RectTransform>();
 
-            float prfHeight = tmpText.GetPreferredValues(consoleData.Msg, parentRect.rect.width, 0).y;
+            var s = consoleData.Msg.Length > 0 ? consoleData.Msg : " ";
+            float prfHeight = tmpText.GetPreferredValues(s, parentRect.rect.width, 0).y;
 
             rectTransform.sizeDelta = new Vector2(0, prfHeight);
         }

@@ -31,10 +31,9 @@ public class LogTest : MonoBehaviour {
     }
 
     private IEnumerator Start() {
-        for (int loop = 0; loop < 100; loop++) {
-            Debug.Log(loop + "___" + GenerateRandomString(Random.Range(100, 300)));
-        }
-        //Debug.Log(qwer);
+        //for (int loop = 0; loop < 100; loop++) {
+        //    Debug.Log(loop + "___" + GenerateRandomString(Random.Range(100, 300)));
+        //}        
 
 
         IgConsole.OnSubmit += (string str) => {
@@ -58,8 +57,7 @@ public class LogTest : MonoBehaviour {
         };
 
         int aasd = 0;
-        for (int loop = 0; loop < 1000; loop++) {
-            //Debug.Log(aasd++ + "....." + "asnlsnflksdgznzsbdjkbzkjsgbkzjlsdbgkjzsdgbzksdjbzdskgjbzkldsjzljkdsgbjzlb");
+        for (int loop = 0; loop < 0; loop++) {
             Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(10, 20)));
             Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(10, 20)));
             Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(100, 200)));
@@ -69,14 +67,11 @@ public class LogTest : MonoBehaviour {
 
 
         while (true) {
-            //for (int loop = 0; loop < 3000; loop++) {
-            //Debug.Log(aasd++ + "....." + "asnlsnflksdgznzsbdjkbzkjsgbkzjlsdbgkjzsdgbzksdjbzdskgjbzkldsjzljkdsgbjzlb");
-            Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(10, 20)));
-            Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(10, 20)));
-            Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(100, 200)));
+            //Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(10, 20)));
+            //Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(10, 20)));
+            //Debug.Log(aasd++ + "....." + GenerateRandomString(Random.Range(100, 200)));
 
             //yield return new WaitForSeconds(0.1f);
-
             yield return null;
         }
 
@@ -87,7 +82,7 @@ public class LogTest : MonoBehaviour {
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.L)) {
-            IgConsole.Log("....." + GenerateRandomString(Random.Range(1000, 3000)));
+            //IgConsole.Log("....." + GenerateRandomString(Random.Range(1000, 3000)));
         }
     }
 }

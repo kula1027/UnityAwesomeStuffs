@@ -15,5 +15,7 @@ namespace IngameConsole {
         public abstract void Hide();
 
         public abstract void Show();
+
+        public abstract bool IsVisible { get; }
     }
 }
